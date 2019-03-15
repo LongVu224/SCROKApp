@@ -7,6 +7,9 @@ const AppNavigator = createStackNavigator({
     Homepage: {
       screen: Homepage,
     },
+    Categories: {
+      screen: Homepage
+    },
     Grouppage: {
       screen: Grouppage,
     },

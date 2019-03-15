@@ -1,8 +1,57 @@
 import React, {Component} from 'react';
 import {Linking, Button, TouchableOpacity, Image, ScrollView, View, Text } from'react-native';
 import style from '../style/style';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+
+
 
 export default class Grouppage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: '',
+            content: ''
+        };
+
+        handleChange = (newTitle, newContent) => {
+            return this.setState({
+                title: newTitle,
+                content: newContent,
+            })
+        }
+    }
+
+    componentDidMount() {
+        const config = {
+            apiKey: "AIzaSyCkRzVwEj3M5Zd1O1LYSGDgKZ6YDPrQ4aI",
+            authDomain: "scrok-e9cdc.firebaseapp.com",
+            databaseURL: "https://scrok-e9cdc.firebaseio.com",
+            projectId: "scrok-e9cdc",
+            storageBucket: "scrok-e9cdc.appspot.com",
+            messagingSenderId: "229863456822"
+          };
+          if (!firebase.apps.length) {
+            firebase.initializeApp(config);
+        }
+
+        const db = firebase.firestore();
+        var docRef = db.collection("gym").doc("BfMrKFL270yFqljpiqaN");
+
+        docRef.get().then(function(doc) {
+            console.log("Document data:", doc.data().content);
+            const newContent = doc.data().content;
+            const newTitle = doc.data().title;
+            handleChange(newTitle, newContent);
+        });
+
+        docRef.onSnapshot(function(doc) {
+            console.log("Current data: ", doc.data());
+            let newContent = doc.data().content;
+            let newTitle = doc.data().title;
+            handleChange(newTitle, newContent);
+        });
+    }
     render() {
         return (
             <ScrollView>
@@ -14,14 +63,16 @@ export default class Grouppage extends Component {
                     <Text style={{color: 'white', marginLeft: 10}}>Gym Activities</Text>
                 </View>
                 <View style={style.content}>
-                    <Text style={style.title}>Title</Text>
+                    <Text style={style.title}>{this.state.title}</Text>
                     <Image 
                     style={style.imageContent}
                     source={require('./logo.jpg')}
                     />
                     <Text
                     style={style.textContent}
-                    >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ornare fringilla eros, ac venenatis risus ullamcorper at. Mauris congue sagittis vulputate. Nam sem sem, interdum sed luctus vitae, aliquet in quam. Ut pulvinar enim in leo bibendum laoreet. Quisque rhoncus a quam eu molestie. Ut interdum pretium nisi a molestie. Nunc non mollis nisi. Maecenas consectetur sapien quis leo bibendum sagittis. Nunc cursus massa et gravida hendrerit. Praesent molestie erat et pretium placerat. Nunc id varius orci. Proin pellentesque ex felis, sagittis pellentesque massa lobortis quis. Sed vel lacus blandit, semper metus et, vehicula tellus. Quisque ut nibh risus</Text>
+                    >
+                    {this.state.content}
+                    </Text>
                     <TouchableOpacity onPress={() => Linking.openURL('https://scrok.fi/')}>
                         <Text style={{padding: 20, fontSize: 20, fontWeight: 'bold'}}>
                         https://scrok.fi/

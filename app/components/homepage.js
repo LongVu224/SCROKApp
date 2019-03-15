@@ -19,7 +19,7 @@ export default class Homepage extends React.Component {
             onValueChange={(itemValue, itemIndex) =>
                 this.setState({categories: itemValue})
             }>
-            <Picker.Item label="Categories" />
+            <Picker.Item label="Categories" value="Categories"/>
             <Picker.Item label="Gym" value="Gympage" />
             <Picker.Item label="Group" value="Grouppage" />
         </Picker>
