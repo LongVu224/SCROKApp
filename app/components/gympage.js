@@ -11,15 +11,18 @@ export default class Grouppage extends Component {
         super(props);
         this.state = {
             title: '',
+            image: '',
             content: ''
         };
 
-        handleChange = (newTitle, newContent) => {
+        handleChange = (newTitle, newImage, newContent) => {
             return this.setState({
                 title: newTitle,
+                image: newImage,
                 content: newContent,
             })
         }
+
     }
 
     componentDidMount() {
@@ -33,7 +36,7 @@ export default class Grouppage extends Component {
           };
           if (!firebase.apps.length) {
             firebase.initializeApp(config);
-        }
+        } 
 
         const db = firebase.firestore();
         var docRef = db.collection("gym").doc("BfMrKFL270yFqljpiqaN");
@@ -41,15 +44,17 @@ export default class Grouppage extends Component {
         docRef.get().then(function(doc) {
             console.log("Document data:", doc.data().content);
             const newContent = doc.data().content;
+            const newImage = doc.data().image;
             const newTitle = doc.data().title;
-            handleChange(newTitle, newContent);
+            handleChange(newTitle, newImage, newContent);
         });
 
         docRef.onSnapshot(function(doc) {
             console.log("Current data: ", doc.data());
             let newContent = doc.data().content;
+            let newImage = doc.data().image;
             let newTitle = doc.data().title;
-            handleChange(newTitle, newContent);
+            handleChange(newTitle, newImage, newContent);
         });
     }
     render() {
@@ -66,7 +71,7 @@ export default class Grouppage extends Component {
                     <Text style={style.title}>{this.state.title}</Text>
                     <Image 
                     style={style.imageContent}
-                    source={require('./logo.jpg')}
+                    source={{uri: this.state.image}}
                     />
                     <Text
                     style={style.textContent}
