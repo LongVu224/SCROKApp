@@ -3,8 +3,14 @@ import {Linking, Button, TouchableOpacity, Image, ScrollView, View, Text } from'
 import style from '../style/style';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import Expo from 'expo';
 
-
+async function register() {
+    const { status } = await Expo.Permissions.askAsync(
+        Expo.Permissions.NOTIFICATIONS
+        );
+    console.log(status);
+}
 
 export default class Grouppage extends Component {
     constructor(props) {
@@ -25,6 +31,10 @@ export default class Grouppage extends Component {
 
     }
 
+    componentWillMount() {
+        register();
+    }
+
     componentDidMount() {
         const config = {
             apiKey: "AIzaSyCkRzVwEj3M5Zd1O1LYSGDgKZ6YDPrQ4aI",
@@ -42,7 +52,6 @@ export default class Grouppage extends Component {
         var docRef = db.collection("gym").doc("BfMrKFL270yFqljpiqaN");
 
         docRef.get().then(function(doc) {
-            console.log("Document data:", doc.data().content);
             const newContent = doc.data().content;
             const newImage = doc.data().image;
             const newTitle = doc.data().title;
@@ -50,7 +59,6 @@ export default class Grouppage extends Component {
         });
 
         docRef.onSnapshot(function(doc) {
-            console.log("Current data: ", doc.data());
             let newContent = doc.data().content;
             let newImage = doc.data().image;
             let newTitle = doc.data().title;
