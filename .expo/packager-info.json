@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 19756,
-  "expoServerNgrokUrl": "https://rh-8if.anonymous.scrokapp.exp.direct",
-  "packagerNgrokUrl": "https://packager.rh-8if.anonymous.scrokapp.exp.direct",
-  "ngrokPid": 452,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
-} 
+}

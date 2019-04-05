@@ -3,6 +3,35 @@ import {Linking, Button, TouchableOpacity, Image, ScrollView, View, Text } from'
 import style from '../style/style';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import Expo, { Permissions, Notifications } from 'expo';
+
+async function register() {
+    try {
+        let token = await Notifications.getExpoPushTokenAsync();
+      
+        firebase.firestore().collection("group").doc("MQy9WzZDPBfM10iz0d82").update({token: token});
+        }
+        catch(error) {
+          console.log(error);
+    }
+}
+
+sendPushNotificationGroup = () => {
+    let response = fetch('https://exp.host/--/api/v2/push/send', {
+       method: 'POST',
+       headers: {
+           Accept: 'application/json',
+           'Content-Type': 'application/json'
+       } ,
+       body: JSON.stringify({
+           to:'ExponentPushToken[JOL-UnPK5FJrivGxqV8M0b]',
+           sound:'default',
+           title: 'SCROK App',
+           body:'Group Activities have a news! Check it now.'
+       })
+    });
+};
+
 
 export default class Grouppage extends Component {
     constructor(props) {
@@ -22,6 +51,7 @@ export default class Grouppage extends Component {
         }
     }
     
+    
         componentDidMount() {
             const config = {
                 apiKey: "AIzaSyCkRzVwEj3M5Zd1O1LYSGDgKZ6YDPrQ4aI",
@@ -37,14 +67,8 @@ export default class Grouppage extends Component {
     
             const db = firebase.firestore();
             var docRef = db.collection("group").doc("MQy9WzZDPBfM10iz0d82");
-    
-            docRef.get().then(function(doc) {
-                console.log("Document data:", doc.data().content);
-                const newContent = doc.data().content;
-                const newImage = doc.data().image;
-                const newTitle = doc.data().title;
-                handleChange(newTitle, newImage, newContent);
-            });
+            let firstRun = true;
+            register();
     
             docRef.onSnapshot(function(doc) {
                 console.log("Current data: ", doc.data());
@@ -52,6 +76,10 @@ export default class Grouppage extends Component {
                 let newImage = doc.data().image;
                 let newTitle = doc.data().title;
                 handleChange(newTitle, newImage, newContent);
+                if (firstRun == false) {
+                    sendPushNotificationGroup();
+                }
+                firstRun = false;
             });
         }
     render() {

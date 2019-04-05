@@ -36,7 +36,7 @@ async function register() {
     */
 }
 
-sendPushNotification = () => {
+sendPushNotificationGym = () => {
     let response = fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
        headers: {
@@ -90,7 +90,7 @@ export default class Grouppage extends Component {
         const db = firebase.firestore();
         var docRef = db.collection("gym").doc("BfMrKFL270yFqljpiqaN");
 
-        register();
+        //register();
         var firstRun = true;
 
         docRef.onSnapshot(function(doc) {
@@ -99,7 +99,7 @@ export default class Grouppage extends Component {
             let newTitle = doc.data().title;
             handleChange(newTitle, newImage, newContent);
             if (firstRun == false) {
-                sendPushNotification();
+                sendPushNotificationGym();
             }
             firstRun = false;
         });
