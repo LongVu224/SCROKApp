@@ -6,51 +6,16 @@ import 'firebase/firestore';
 import Expo, { Permissions, Notifications } from 'expo';
 
 async function register() {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.NOTIFICATIONS
-    );
-    let finalStatus = existingStatus;
-  
-    // only ask if permissions have not already been determined, because
-    // iOS won't necessarily prompt the user a second time.
-    if (existingStatus !== 'granted') {
-      // Android remote notification permissions are granted during the app
-      // install, so this will only ask on iOS
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
-    }
-  
-    // Stop here if the user did not grant permissions
-    /*
-    if (finalStatus !== 'granted') {
-      return;
-    }
     try {
     let token = await Notifications.getExpoPushTokenAsync();
   
-    firebase.firestore().collection("gym").doc("BfMrKFL270yFqljpiqaN").update({token: token});
+    changeToken(token);
     }
     catch(error) {
       console.log(error);
     }
-    */
+    
 }
-
-sendPushNotificationGym = () => {
-    let response = fetch('https://exp.host/--/api/v2/push/send', {
-       method: 'POST',
-       headers: {
-           Accept: 'application/json',
-           'Content-Type': 'application/json'
-       } ,
-       body: JSON.stringify({
-           to:'ExponentPushToken[JOL-UnPK5FJrivGxqV8M0b]',
-           sound:'default',
-           title: 'SCROK App',
-           body:'Gym Activities have a news! Check it now.'
-       })
-    });
-};
 
  
 export default class Grouppage extends Component {
@@ -59,7 +24,8 @@ export default class Grouppage extends Component {
         this.state = {
             title: '',
             image: '',
-            content: ''
+            content: '',
+            token: ''
         };
 
         handleChange = (newTitle, newImage, newContent) => {
@@ -70,9 +36,31 @@ export default class Grouppage extends Component {
             })
         }
 
+        changeToken = (newToken) => {
+            return this.setState({
+                token: newToken
+            })
+        }
+
+        sendPushNotificationGym = () => {
+            let response = fetch('https://exp.host/--/api/v2/push/send', {
+               method: 'POST',
+               headers: {
+                   Accept: 'application/json',
+                   'Content-Type': 'application/json'
+               } ,
+               body: JSON.stringify({
+                   to: this.state.token,
+                   sound:'default',
+                   title: 'SCROK App',
+                   body:'Gym Activities have a news! Check it now.'
+               })
+            });
+        };
     }
 
- 
+    
+    
  
     componentDidMount() {
         const config = {
@@ -90,7 +78,7 @@ export default class Grouppage extends Component {
         const db = firebase.firestore();
         var docRef = db.collection("gym").doc("BfMrKFL270yFqljpiqaN");
 
-        //register();
+        register();
         var firstRun = true;
 
         docRef.onSnapshot(function(doc) {

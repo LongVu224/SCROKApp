@@ -9,28 +9,15 @@ async function register() {
     try {
         let token = await Notifications.getExpoPushTokenAsync();
       
-        firebase.firestore().collection("group").doc("MQy9WzZDPBfM10iz0d82").update({token: token});
+        changeToken(token);
         }
         catch(error) {
           console.log(error);
-    }
+        }
+        
 }
 
-sendPushNotificationGroup = () => {
-    let response = fetch('https://exp.host/--/api/v2/push/send', {
-       method: 'POST',
-       headers: {
-           Accept: 'application/json',
-           'Content-Type': 'application/json'
-       } ,
-       body: JSON.stringify({
-           to:'ExponentPushToken[JOL-UnPK5FJrivGxqV8M0b]',
-           sound:'default',
-           title: 'SCROK App',
-           body:'Group Activities have a news! Check it now.'
-       })
-    });
-};
+
 
 
 export default class Grouppage extends Component {
@@ -39,7 +26,8 @@ export default class Grouppage extends Component {
         this.state = {
             title: '',
             image: '',
-            content: ''
+            content: '',
+            token: '',
         };
 
         handleChange = (newTitle, newImage, newContent) => {
@@ -49,6 +37,28 @@ export default class Grouppage extends Component {
                 content: newContent,
             })
         }
+
+        changeToken = (newToken) => {
+            return this.setState({
+                token: newToken
+            })
+        }
+
+        sendPushNotificationGroup = () => {
+            let response = fetch('https://exp.host/--/api/v2/push/send', {
+               method: 'POST',
+               headers: {
+                   Accept: 'application/json',
+                   'Content-Type': 'application/json'
+               } ,
+               body: JSON.stringify({
+                   to: this.state.token,
+                   sound:'default',
+                   title: 'SCROK App',
+                   body:'Group Activities have a news! Check it now.' 
+               })
+            });
+        };
     }
     
     
