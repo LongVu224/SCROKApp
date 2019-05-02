@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, View, Text, Picker } from 'react-native';
-import Expo, { Permissions, Notifications } from 'expo';
+import { Button, View, Text, Picker, StyleSheet, Platform } from 'react-native';
+import { Permissions} from 'expo';
 
 async function register() {
   const { status: existingStatus } = await Permissions.getAsync(
@@ -41,8 +41,8 @@ export default class Homepage extends React.Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Choose category</Text>
         <Picker
+            style = {styles.picker}
             selectedValue={this.state.categories}
-            style={{height: 50, width: 200}}
             onValueChange={(itemValue, itemIndex) =>
                 this.setState({categories: itemValue})
             }>
@@ -58,3 +58,16 @@ export default class Homepage extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  picker: {
+    height: 50,
+    width: 200,
+    ...Platform.select({
+      ios: {
+        paddingTop: 50,
+      }
+    })
+  },
+
+});
