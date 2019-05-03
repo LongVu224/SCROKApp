@@ -64,19 +64,19 @@ export default class Grouppage extends Component {
     
         componentDidMount() {
             const config = {
-                apiKey: "AIzaSyCkRzVwEj3M5Zd1O1LYSGDgKZ6YDPrQ4aI",
-                authDomain: "scrok-e9cdc.firebaseapp.com",
-                databaseURL: "https://scrok-e9cdc.firebaseio.com",
-                projectId: "scrok-e9cdc",
-                storageBucket: "scrok-e9cdc.appspot.com",
-                messagingSenderId: "229863456822"
+                apiKey: "AIzaSyDxMy55b41dPdJde0MVjihciaSnF4Nqa5M",
+                authDomain: "scrok-9db6b.firebaseapp.com",
+                databaseURL: "https://scrok-9db6b.firebaseio.com",
+                projectId: "scrok-9db6b",
+                storageBucket: "scrok-9db6b.appspot.com",
+                messagingSenderId: "362874821502"
               };
               if (!firebase.apps.length) {
                 firebase.initializeApp(config);
             } 
     
             const db = firebase.firestore();
-            var docRef = db.collection("group").doc("MQy9WzZDPBfM10iz0d82");
+            var docRef = db.collection("group").doc("owAZuB0DK3t69vQIamMt");
             let firstRun = true;
             register();
     
