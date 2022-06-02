@@ -1,4 +1,4 @@
-# SCROKApp - mobile app for GYM news informing
+# SCROKApp - mobile app for GYM news publishing
 
 ## Setting up
 
